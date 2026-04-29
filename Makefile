@@ -10,22 +10,22 @@ clean:
 # Check if GITHUB_ACTIONS is set
 ifeq ($(GITHUB_ACTIONS), true)
     # Commands for CI (GitHub Actions)
-    PIPENV_CMD = pipenv --python=$(shell which python3)
+    INSTALL_CMD = pipenv install --python=$(shell which python3)
 else
     # Commands for your local machine
-    PIPENV_CMD = pipenv
+    INSTALL_CMD = pipenv install
 endif
 
 install: ## Install runtime dependencies
 	pip install pipenv
-	$(PIPENV_CMD) install
+	$(INSTALL_CMD)
 
 install-dev: install ## Install development dependencies
-	$(PIPENV_CMD) install --dev
+	$(INSTALL_CMD) --dev
 
 install-build: ## Install build dependencies
 	pip install pipenv
-	$(PIPENV_CMD) install --categories="build"
+	$(INSTALL_CMD) --categories="build"
 
 uninstall: ## Uninstall runtime dependencies
 	pipenv uninstall --all
@@ -41,7 +41,7 @@ format: ## Format source and test code using black
 	pipenv run black --skip-string-normalization ./tests
 
 test: lint ## Run unit tests
-	$(PIPENV_CMD) run pytest -vv -s
+	pipenv run pytest -vv -s
 
 dist: clean ## Creates a source distribution and wheel distribution
 	pipenv run python -m build
