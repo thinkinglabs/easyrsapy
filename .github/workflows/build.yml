@@ -1,0 +1,31 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python: ['3.10', '3.11', '3.12', '3.13', '3.14']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: make install-dev
+      - name: Tests
+        run: make test
