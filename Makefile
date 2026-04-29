@@ -9,14 +9,14 @@ clean:
 
 install: ## Install runtime dependencies
 	pip install pipenv
-	pipenv install --deploy
+	pipenv install
 
 install-dev: install ## Install development dependencies
-	pipenv install --deploy --dev
+	pipenv install --dev
 
 install-build: ## Install build dependencies
 	pip install pipenv
-	pipenv install --deploy --categories="build"
+	pipenv install --categories="build"
 
 uninstall: ## Uninstall runtime dependencies
 	pipenv uninstall --all
