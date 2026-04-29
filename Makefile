@@ -7,10 +7,12 @@ help: ## Print the help documentation
 clean:
 	rm -rf ./dist
 
-# Check if GITHUB_ACTIONS is set
+# Check whether executed by GitHub Actions or locally
 ifeq ($(GITHUB_ACTIONS), true)
-    # Commands for CI (GitHub Actions)
-    INSTALL_CMD = pipenv install --python=$(shell which python3)
+    # --skip-lock installs from Pipfile so environment markers (e.g. exceptiongroup
+    # for python < 3.11) are resolved against the active interpreter. A lock file
+    # generated with a different Python version would otherwise omit those packages.
+    INSTALL_CMD = pipenv install --skip-lock --python=$(shell which python3)
 else
     # Commands for your local machine
     INSTALL_CMD = pipenv install
