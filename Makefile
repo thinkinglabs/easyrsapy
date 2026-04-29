@@ -7,16 +7,25 @@ help: ## Print the help documentation
 clean:
 	rm -rf ./dist
 
+# Check if GITHUB_ACTIONS is set
+ifeq ($(GITHUB_ACTIONS), true)
+    # Commands for CI (GitHub Actions)
+    INSTALL_CMD = pipenv install --python=$(shell which python3)
+else
+    # Commands for your local machine
+    INSTALL_CMD = pipenv install
+endif
+
 install: ## Install runtime dependencies
 	pip install pipenv
-	pipenv install
+	$(INSTALL_CMD)
 
 install-dev: install ## Install development dependencies
-	pipenv install --dev
+	$(INSTALL_CMD) --dev
 
 install-build: ## Install build dependencies
 	pip install pipenv
-	pipenv install --categories="build"
+	$(INSTALL_CMD) --categories="build"
 
 uninstall: ## Uninstall runtime dependencies
 	pipenv uninstall --all
