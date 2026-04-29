@@ -8,10 +8,10 @@ clean:
 	rm -rf ./dist
 
 install: ## Install runtime dependencies
+	pip install pipenv
 	pipenv install --deploy
 
 install-dev: install ## Install development dependencies
-	pip install pipenv
 	pipenv install --deploy --dev
 
 install-build: ## Install build dependencies
