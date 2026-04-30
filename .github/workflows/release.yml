@@ -7,6 +7,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read   # Required to checkout the code
+      id-token: write  # Required for OIDC / PyPi Trusted Publishing
 
     steps:
       - name: Checkout
@@ -23,6 +26,3 @@ jobs:
         run: make dist
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
