@@ -7,6 +7,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: pypi
     permissions:
       contents: read   # Required to checkout the code
       id-token: write  # Required for OIDC / PyPi Trusted Publishing
