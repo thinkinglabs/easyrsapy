@@ -35,6 +35,3 @@ jobs:
         run: make install-dev
       - name: Tests
         run: make test
-      - name: Setup tmate session
-        if: ${{ failure() }}
-        uses: mxschmitt/action-tmate@v3
