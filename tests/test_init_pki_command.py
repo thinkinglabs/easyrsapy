@@ -4,6 +4,13 @@ from .context import easyrsapy  # noqa: F401
 from easyrsapy.init_pki_command import InitPkiCommand, InitPkiRequest
 
 
+def teardown_function():
+    # clean up the pki dir after each test
+    import shutil
+
+    shutil.rmtree("/tmp/pki", ignore_errors=True)
+
+
 def test_init_pki():
     expected = """
                   Notice

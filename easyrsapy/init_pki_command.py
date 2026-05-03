@@ -20,7 +20,7 @@ class InitPkiCommand:
             self.easy_rsa_path,
             "--batch",
             f"--pki-dir={request.pki_dir}",
-            "init-pki"
+            "init-pki",
         ]
         cp = subprocess.run(
             args,
