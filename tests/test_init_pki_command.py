@@ -1,9 +1,7 @@
 import textwrap
 
 from .context import easyrsapy  # noqa: F401
-from easyrsapy.easyrsa import EasyRSA
-
-EASYRSA_PATH = "/opt/homebrew/bin/easyrsa"
+from easyrsapy.init_pki_command import InitPkiCommand, InitPkiRequest
 
 
 def test_init_pki():
@@ -16,6 +14,10 @@ def test_init_pki():
                   * /tmp/test_pki
                   
                   """  # noqa: W293
-    easyrsa = EasyRSA(EASYRSA_PATH)
-    actual = easyrsa.init_pki("/tmp/test_pki")
+    pki_dir = "/tmp/test_pki"
+    command = InitPkiCommand(easy_rsa_path="easyrsa")
+    request = InitPkiRequest(pki_dir=pki_dir)
+    response = command.execute(request)
+    actual = response.notice
     assert textwrap.dedent(expected) == actual
+    assert pki_dir == response.pki_dir
