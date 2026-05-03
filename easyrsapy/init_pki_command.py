@@ -16,8 +16,14 @@ class InitPkiCommand:
         self.easy_rsa_path = easy_rsa_path
 
     def execute(self, request: InitPkiRequest) -> InitPkiResponse:
+        args = [
+            self.easy_rsa_path,
+            "--batch",
+            f"--pki-dir={request.pki_dir}",
+            "init-pki"
+        ]
         cp = subprocess.run(
-            [self.easy_rsa_path, "--batch", f"--pki-dir={request.pki_dir}", "init-pki"],
+            args,
             check=True,
             capture_output=True,
             text=True,
