@@ -1,7 +1,11 @@
 import textwrap
 
 from .context import easyrsapy  # noqa: F401
-from easyrsapy.init_pki_command import InitPkiCommand, InitPkiRequest, InitPkiStdOutParser
+from easyrsapy.init_pki_command import (
+    InitPkiCommand,
+    InitPkiRequest,
+    InitPkiStdOutParser,
+)
 
 
 def teardown_function():

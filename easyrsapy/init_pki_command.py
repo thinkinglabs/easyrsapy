@@ -35,9 +35,9 @@ class InitPkiCommand:
 
 class InitPkiStdOutParser:
     """
-    Parses the stdout output of the 'init-pki' command to extract the pki_dir.
+    Parses the stdout notice from the 'init-pki' command to extract the pki_dir.
 
-    Example stdout output:
+    Example stdout notice:
     ---
     Notice
     ------
@@ -45,12 +45,13 @@ class InitPkiStdOutParser:
 
     Your newly created PKI dir is:
     * /tmp/pki
+
     ---
     """
 
-    def parse(self, response: str) -> InitPkiResponse:
+    def parse(self, notice: str) -> InitPkiResponse:
         pattern = re.compile(r"^\*\s*(?P<path>(/[a-zA-Z0-9-_]+)+|/)$")
-        lines = response.splitlines()
+        lines = notice.splitlines()
         pki_dir = None
         for line in lines:
             match = pattern.match(line)

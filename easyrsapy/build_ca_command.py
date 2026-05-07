@@ -1,3 +1,4 @@
+import re
 import subprocess
 from typing import NamedTuple
 
@@ -9,11 +10,12 @@ class BuildCARequest(NamedTuple):
 
 
 class BuildCAResponse(NamedTuple):
-    notice: str
+    ca_path: str
 
 
 class BuildCACommand:
-    def __init__(self, easy_rsa_path):
+    def __init__(self, parser: BuildCAStdOutParser, easy_rsa_path: str):
+        self.parser = parser
         self.easy_rsa_path = easy_rsa_path
 
     def execute(self, request: BuildCARequest) -> BuildCAResponse:
@@ -32,4 +34,33 @@ class BuildCACommand:
             capture_output=True,
             text=True,
         )
-        return BuildCAResponse(notice=cp.stdout)
+        print(cp.stdout)
+        return self.parser.parse(cp.stdout)
+
+
+class BuildCAStdOutParser:
+    """
+    Parses the stdout notice from the 'build-ca' command to extract the CA certificate path.
+
+    Example stdout notice:
+    ---
+    Notice
+    ------
+    CA creation complete. Your new CA certificate is at:
+    * /tmp/pki/ca.crt
+
+    Build-ca completed successfully.
+
+    ---
+    """
+
+    def parse(self, notice: str) -> BuildCAResponse:
+        pattern = re.compile(r"^\*\s*(?P<path>(/[a-zA-Z0-9-_]+)*/ca\.crt)$")
+        lines = notice.splitlines()
+        ca_path = None
+        for line in lines:
+            match = pattern.match(line)
+            if match:
+                ca_path = match.group("path")
+                break
+        return BuildCAResponse(ca_path=ca_path)
